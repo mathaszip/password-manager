@@ -42,7 +42,8 @@ The password manager follows a client-side encryption architecture where:
   - TypeScript for type safety
   - React context API for state management
   - PostgreSQL relational database
-  - RESTful API design
+  - Sequelize ORM for database operations
+  - RESTful API design with Express
   - JWT authentication
   - Error handling and validation
 
@@ -68,6 +69,16 @@ The PostgreSQL database includes tables for:
 - `users`: Stores user accounts and authentication information
 - `passwords`: Stores encrypted password entries with relationships to users
 - `testimonials`: Stores user reviews and ratings
+
+## Technical Implementation
+
+### Backend Architecture
+
+- **Express Server**: Handles API requests and authentication
+- **Sequelize ORM**: Provides an abstraction layer over PostgreSQL database
+- **Model-based approach**: Database models defined in the server/models directory
+- **Middleware-based Authentication**: JWT authentication with protected routes
+- **Timestamps**: All database records include created_at and updated_at timestamps
 
 ## Getting Started
 
@@ -183,42 +194,3 @@ The PostgreSQL database includes tables for:
 - Log out when you're done to clear the encryption key from memory
 - Keep your operating system and browser up-to-date
 - Be cautious about using the password manager on public computers
-
-## Technical Implementation Details
-
-### Frontend
-
-- Built with React and TypeScript
-- Uses React Context API for state management
-- Client-side encryption using CryptoJS library
-- Form validation with Formik and Yup
-- Responsive design with CSS
-
-### Backend
-
-- Node.js with Express framework
-- RESTful API design
-- JWT for authentication
-- PostgreSQL for data storage
-- Input validation and error handling
-
-### API Endpoints
-
-- `/api/auth/register` - Register a new user
-- `/api/auth/login` - Authenticate a user
-- `/api/passwords` - CRUD operations for password entries
-- `/api/testimonials` - CRUD operations for testimonials
-
-## Contribution Guidelines
-
-Contributions are welcome! Please follow these steps:
-
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add some amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
-
-## License
-
-This project is licensed under the ISC License - see the LICENSE file for details.

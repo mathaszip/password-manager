@@ -1,10 +1,12 @@
 const express = require("express");
 const cors = require("cors");
 const dotenv = require("dotenv");
-const db = require("./db");
 
 // Load environment variables
 dotenv.config();
+
+// Database connection
+const sequelize = require("./config/database");
 
 // Initialize Express
 const app = express();
@@ -29,6 +31,20 @@ app.use((err, req, res, next) => {
   res.status(500).json({ message: "Server error", error: err.message });
 });
 
-// Start server
+// Sync database and start server
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+
+// Sync models with database
+sequelize
+  .sync({ alter: false })
+  .then(() => {
+    console.log("Database synced");
+
+    // Start server
+    app.listen(PORT, () => {
+      console.log(`Server running on port ${PORT}`);
+    });
+  })
+  .catch((err) => {
+    console.error("Error syncing database:", err);
+  });

@@ -9,7 +9,8 @@ CREATE TABLE users (
   id SERIAL PRIMARY KEY,
   email VARCHAR(255) UNIQUE NOT NULL,
   password VARCHAR(255) NOT NULL,
-  created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
 
 -- Create passwords table
@@ -22,10 +23,7 @@ CREATE TABLE passwords (
   encrypted_password TEXT NOT NULL,
   iv TEXT NOT NULL,
   created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
-  updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
-  CONSTRAINT fk_user
-    FOREIGN KEY(user_id)
-    REFERENCES users(id)
+  updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
 
 -- Create testimonials table
@@ -35,9 +33,7 @@ CREATE TABLE testimonials (
   content TEXT NOT NULL,
   rating INTEGER NOT NULL CHECK (rating >= 1 AND rating <= 5),
   created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
-  CONSTRAINT fk_user
-    FOREIGN KEY(user_id)
-    REFERENCES users(id)
+  updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
 
 -- Create indexes for better performance
@@ -53,8 +49,20 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
+-- Create a trigger for users table to update 'updated_at'
+CREATE TRIGGER update_users_modtime
+BEFORE UPDATE ON users
+FOR EACH ROW
+EXECUTE FUNCTION update_modified_column();
+
 -- Create a trigger for passwords table to update 'updated_at'
 CREATE TRIGGER update_passwords_modtime
 BEFORE UPDATE ON passwords
+FOR EACH ROW
+EXECUTE FUNCTION update_modified_column();
+
+-- Create a trigger for testimonials table to update 'updated_at'
+CREATE TRIGGER update_testimonials_modtime
+BEFORE UPDATE ON testimonials
 FOR EACH ROW
 EXECUTE FUNCTION update_modified_column();
