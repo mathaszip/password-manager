@@ -99,7 +99,7 @@ The PostgreSQL database includes tables for:
    ```
 2. Create a new user and database:
    ```sql
-   CREATE USER root WITH PASSWORD 'mathiasole123';
+   CREATE USER root WITH PASSWORD 'YOUR_PASSWORD_HERE';
    CREATE DATABASE password_manager;
    GRANT ALL PRIVILEGES ON DATABASE password_manager TO root;
    ```
